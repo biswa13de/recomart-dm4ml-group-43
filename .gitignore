@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.pkl
+data/raw/
+data/processed/
+data/*.db
+logs/*.log
+feature_store/*/
+!feature_store/feature_registry.json
+.env
+venv/

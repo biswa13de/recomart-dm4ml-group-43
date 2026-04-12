@@ -1,0 +1,23 @@
+{
+  "run_id": "20260408_162711_169062",
+  "experiment": "content_based_filtering",
+  "status": "FINISHED",
+  "start_time": "2026-04-08T16:27:11.169764",
+  "end_time": "2026-04-08T16:27:11.232667",
+  "params": {
+    "model_type": "ContentBased",
+    "similarity": "cosine",
+    "feature_cols": [
+      "price_normalized",
+      "category_encoded",
+      "popularity_score",
+      "avg_rating_received",
+      "total_interactions"
+    ],
+    "n_items": 491
+  },
+  "metrics": {
+    "category_consistency@5": 0.73
+  },
+  "tags": {}
+}

@@ -1,0 +1,85 @@
+======================================================================
+  RECOMART DATA QUALITY REPORT
+  Generated: 2026-04-08 16:27:10 UTC
+======================================================================
+
+── Dataset: INTERACTIONS ──
+   Rows: 2000  |  Columns: 5
+   Rules run: 11  |  Passed: 11  |  Failed: 0
+   Pass rate: 100.0%
+
+   Validation Results:
+     ✅  not_empty                                     2000 rows found
+     ✅  required_columns                              All present
+     ✅  no_nulls:user_id                              0 nulls (0.0%)
+     ✅  no_nulls:item_id                              0 nulls (0.0%)
+     ✅  no_nulls:rating                               0 nulls (0.0%)
+     ✅  no_nulls:timestamp                            0 nulls (0.0%)
+     ✅  no_duplicates:user_id+item_id+timestamp       0 duplicate rows
+     ✅  range:rating[1.0,5.0]                         0 out-of-range values
+     ✅  positive:user_id                              0 non-positive values
+     ✅  positive:item_id                              0 non-positive values
+     ✅  date_format:timestamp                         All dates valid
+
+── Dataset: PRODUCTS ──
+   Rows: 500  |  Columns: 8
+   Rules run: 9  |  Passed: 9  |  Failed: 0
+   Pass rate: 100.0%
+
+   Validation Results:
+     ✅  not_empty                                     500 rows found
+     ✅  required_columns                              All present
+     ✅  no_nulls:item_id                              0 nulls (0.0%)
+     ✅  no_nulls:title                                0 nulls (0.0%)
+     ✅  no_nulls:category                             0 nulls (0.0%)
+     ✅  no_nulls:price                                0 nulls (0.0%)
+     ✅  no_duplicates:item_id                         0 duplicate rows
+     ✅  positive:price                                0 non-positive values
+     ✅  range:rating[0.0,5.0]                         0 out-of-range values
+
+======================================================================
+  COLUMN PROFILES
+======================================================================
+
+── INTERACTIONS (2000 rows × 5 cols) ──
+   user_id (int64):
+     nulls=0 (0.0%)  unique=200
+     min=1.0  max=200.0  mean=100.168  std=58.071
+   item_id (int64):
+     nulls=0 (0.0%)  unique=491
+     min=1.0  max=500.0  mean=252.851  std=144.492
+   rating (float64):
+     nulls=0 (0.0%)  unique=41
+     min=1.0  max=5.0  mean=3.028  std=1.148
+   timestamp (str):
+     nulls=0 (0.0%)  unique=2000
+     top values: {'2024-01-01 00:00:00': 1, '2024-01-01 00:30:00': 1, '2024-01-01 01:00:00': 1}
+   event_type (str):
+     nulls=0 (0.0%)  unique=4
+     top values: {'view': 1002, 'purchase': 528, 'wishlist': 287}
+
+── PRODUCTS (500 rows × 8 cols) ──
+   item_id (int64):
+     nulls=0 (0.0%)  unique=500
+     min=1.0  max=500.0  mean=250.5  std=144.482
+   title (str):
+     nulls=0 (0.0%)  unique=500
+     top values: {'Product_1': 1, 'Product_2': 1, 'Product_3': 1}
+   category (str):
+     nulls=0 (0.0%)  unique=6
+     top values: {'beauty': 92, 'clothing': 91, 'books': 90}
+   brand (str):
+     nulls=0 (0.0%)  unique=5
+     top values: {'BrandD': 118, 'BrandC': 102, 'BrandA': 98}
+   price (float64):
+     nulls=0 (0.0%)  unique=500
+     min=5.54  max=994.86  mean=508.212  std=293.289
+   rating (float64):
+     nulls=0 (0.0%)  unique=41
+     min=1.0  max=5.0  mean=3.041  std=1.151
+   rating_count (int64):
+     nulls=0 (0.0%)  unique=474
+     min=7.0  max=4995.0  mean=2395.798  std=1419.417
+   in_stock (bool):
+     nulls=0 (0.0%)  unique=2
+     min=0.0  max=1.0  mean=0.846  std=0.361

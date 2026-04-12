@@ -1,0 +1,29 @@
+{
+  "run_id": "20260408_162710_788181",
+  "experiment": "svd_collaborative_filtering",
+  "status": "FINISHED",
+  "start_time": "2026-04-08T16:27:10.788697",
+  "end_time": "2026-04-08T16:27:11.163403",
+  "params": {
+    "n_components": 50,
+    "k": 10,
+    "model_type": "SVD",
+    "train_users": 160,
+    "test_users": 40,
+    "train_rows": 1585,
+    "test_rows": 396
+  },
+  "metrics": {
+    "precision@10": 0.0,
+    "recall@10": 0.0,
+    "ndcg@10": 0.0,
+    "evaluated_users": 0.0,
+    "explained_variance": 0.5797,
+    "n_users": 200.0,
+    "n_items": 491.0,
+    "sparsity": 0.9798
+  },
+  "tags": {
+    "framework": "sklearn.TruncatedSVD"
+  }
+}

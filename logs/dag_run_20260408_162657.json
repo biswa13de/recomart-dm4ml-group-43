@@ -1,0 +1,52 @@
+{
+  "dag_id": "recomart_full_pipeline",
+  "run_id": "20260408_162657",
+  "status": "PARTIAL_FAILURE",
+  "total_tasks": 10,
+  "succeeded": 6,
+  "failed": 1,
+  "skipped": 1,
+  "duration_s": 0.16,
+  "task_results": {
+    "ingest_interactions": {
+      "status": "SUCCESS",
+      "duration_s": 0.03,
+      "error": ""
+    },
+    "ingest_products": {
+      "status": "SUCCESS",
+      "duration_s": 0.02,
+      "error": ""
+    },
+    "validate_interactions": {
+      "status": "SUCCESS",
+      "duration_s": 0.01,
+      "error": ""
+    },
+    "validate_products": {
+      "status": "SUCCESS",
+      "duration_s": 0.01,
+      "error": ""
+    },
+    "prepare_interactions": {
+      "status": "SUCCESS",
+      "duration_s": 0.02,
+      "error": ""
+    },
+    "prepare_products": {
+      "status": "SUCCESS",
+      "duration_s": 0.04,
+      "error": ""
+    },
+    "feature_engineering": {
+      "status": "FAILED",
+      "duration_s": 0.02,
+      "error": "Cannot subtract tz-naive and tz-aware datetime-like objects."
+    },
+    "feature_store": {
+      "status": "SKIPPED",
+      "duration_s": 0.0,
+      "error": "Upstream task failed"
+    }
+  }
+}
