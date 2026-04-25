@@ -11,8 +11,8 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
 from datetime import datetime
 from pathlib import Path
 
-OUT = "/mnt/user-data/outputs/RecoMart_DM4ML_Assignment_Report.pdf"
-Path("/mnt/user-data/outputs").mkdir(parents=True, exist_ok=True)
+OUT = str(Path(__file__).resolve().parent / "docs" / "RecoMart_DM4ML_Assignment_Report.pdf")
+Path(OUT).parent.mkdir(parents=True, exist_ok=True)
 
 doc = SimpleDocTemplate(OUT, pagesize=A4,
     leftMargin=2*cm, rightMargin=2*cm,

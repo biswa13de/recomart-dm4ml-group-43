@@ -7,6 +7,7 @@ feature engineering → feature store → model training.
 Can run standalone (no Airflow required) or be imported as an Airflow DAG.
 """
 
+import sys
 import logging
 import time
 import json
@@ -14,6 +15,20 @@ import traceback
 from pathlib import Path
 from datetime import datetime, timedelta
 from dataclasses import dataclass, field
+import pandas as pd
+from ingestion.ingest_interactions import ingest_interactions_csv, generate_sample_interactions
+from ingestion.ingest_products_api import ingest_products_api, _generate_synthetic_products
+from validation.validate_data import validate_interactions, validate_products, write_quality_report, profile_dataframe
+from preparation.prepare_data import clean_interactions, clean_products, encode_products, save_processed
+from features.feature_engineering import (
+    build_user_features, build_item_features,
+    build_interaction_features, build_cooccurrence,
+    init_db, save_features_to_db, DB_PATH
+)
+from features.feature_store import (
+    FeatureStore, USER_FEATURE_DEFS, ITEM_FEATURE_DEFS, INTERACTION_FEATURE_DEFS
+)
+from training.train_model import train_svd_model, train_content_model
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 LOG_DIR = Path(__file__).resolve().parents[2] / "logs"
@@ -166,23 +181,7 @@ class DAGRunner:
 
 # ── Build the RecoMart pipeline DAG ──────────────────────────────────────────
 def build_recomart_dag() -> DAGRunner:
-    import sys
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-    import pandas as pd
-    from ingestion.ingest_interactions import ingest_interactions_csv, generate_sample_interactions
-    from ingestion.ingest_products_api  import ingest_products_api, _generate_synthetic_products
-    from validation.validate_data       import validate_interactions, validate_products, write_quality_report, profile_dataframe
-    from preparation.prepare_data       import clean_interactions, clean_products, encode_products, save_processed
-    from features.feature_engineering   import (
-        build_user_features, build_item_features,
-        build_interaction_features, build_cooccurrence,
-        init_db, save_features_to_db, DB_PATH
-    )
-    from features.feature_store         import (
-        FeatureStore, USER_FEATURE_DEFS, ITEM_FEATURE_DEFS, INTERACTION_FEATURE_DEFS
-    )
-    from training.train_model           import train_svd_model, train_content_model
 
     # Shared context passed between tasks via closure
     ctx = {}

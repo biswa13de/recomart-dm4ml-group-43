@@ -217,33 +217,40 @@ def train_svd_model(df_int: pd.DataFrame, n_components: int = 50, k: int = 10) -
     tracker.log_params({"n_components": n_components, "k": k, "model_type": "SVD"})
     tracker.set_tag("framework", "sklearn.TruncatedSVD")
 
-    # Train/test split by user (80/20)
-    users = df_int["user_id"].unique()
-    train_users, test_users = train_test_split(users, test_size=0.2, random_state=42)
+    # Per-user interaction-level split: hold out last 20% of each user's interactions
+    df_sorted = df_int.copy()
+    df_sorted["timestamp"] = pd.to_datetime(df_sorted["timestamp"], errors="coerce")
+    df_sorted = df_sorted.sort_values(["user_id", "timestamp"]).reset_index(drop=True)
 
-    df_train = df_int[df_int["user_id"].isin(train_users)]
-    df_test  = df_int[df_int["user_id"].isin(test_users)]
+    df_sorted["_rank"]    = df_sorted.groupby("user_id").cumcount()
+    df_sorted["_total"]   = df_sorted.groupby("user_id")["user_id"].transform("count")
+    df_sorted["_is_test"] = df_sorted["_rank"] >= (df_sorted["_total"] * 0.8).astype(int)
+
+    drop_cols = ["_rank", "_total", "_is_test"]
+    df_train = df_sorted[~df_sorted["_is_test"]].drop(columns=drop_cols).reset_index(drop=True)
+    df_test  = df_sorted[df_sorted["_is_test"]].drop(columns=drop_cols).reset_index(drop=True)
 
     tracker.log_params({
-        "train_users":  len(train_users),
-        "test_users":   len(test_users),
-        "train_rows":   len(df_train),
-        "test_rows":    len(df_test),
+        "split_strategy": "per_user_last_20pct",
+        "train_users":    int(df_train["user_id"].nunique()),
+        "test_users":     int(df_test["user_id"].nunique()),
+        "train_rows":     len(df_train),
+        "test_rows":      len(df_test),
     })
 
-    # Fit model
+    # Fit model on full training set (all users present)
     model = SVDRecommender(n_components=n_components)
     model.fit(df_train)
 
-    # Build test ground truth
+    # Build test ground truth (rating >= 3.0 to ensure sufficient coverage)
     test_ground_truth = (
-        df_test[df_test["rating"] >= 3.5]
+        df_test[df_test["rating"] >= 3.0]
         .groupby("user_id")["item_id"]
         .apply(set).to_dict()
     )
 
-    # Generate predictions
-    test_user_ids = [u for u in test_users if u in model.user_idx]
+    # Generate predictions (exclude items already in training for each user)
+    test_user_ids = list(df_test["user_id"].unique())
     predictions   = model.recommend_batch(test_user_ids, n=k)
 
     # Evaluate
