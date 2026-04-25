@@ -1,8 +1,11 @@
 __pycache__/
 *.py[cod]
 *.pkl
-data/raw/
-data/processed/
+data/raw/**
+!data/raw/interactions.dvc
+!data/raw/products.dvc
+data/processed/**
+!data/processed.dvc
 data/*.db
 logs/*.log
 feature_store/*/
