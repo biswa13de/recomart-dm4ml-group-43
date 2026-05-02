@@ -1,0 +1,36 @@
+{"timestamp":"2026-05-01T00:02:47.268368Z","level":"info","event":"setup plugin alembic.autogenerate.schemas","logger":"alembic.runtime.plugins","filename":"plugins.py","lineno":37}
+{"timestamp":"2026-05-01T00:02:47.268447Z","level":"info","event":"setup plugin alembic.autogenerate.tables","logger":"alembic.runtime.plugins","filename":"plugins.py","lineno":37}
+{"timestamp":"2026-05-01T00:02:47.268475Z","level":"info","event":"setup plugin alembic.autogenerate.types","logger":"alembic.runtime.plugins","filename":"plugins.py","lineno":37}
+{"timestamp":"2026-05-01T00:02:47.268497Z","level":"info","event":"setup plugin alembic.autogenerate.constraints","logger":"alembic.runtime.plugins","filename":"plugins.py","lineno":37}
+{"timestamp":"2026-05-01T00:02:47.268515Z","level":"info","event":"setup plugin alembic.autogenerate.defaults","logger":"alembic.runtime.plugins","filename":"plugins.py","lineno":37}
+{"timestamp":"2026-05-01T00:02:47.268535Z","level":"info","event":"setup plugin alembic.autogenerate.comments","logger":"alembic.runtime.plugins","filename":"plugins.py","lineno":37}
+{"timestamp":"2026-05-01T00:02:47.329664Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":209}
+{"timestamp":"2026-05-01T00:02:47.329905Z","level":"info","event":"Filling up the DagBag from /Users/biswa/Downloads/recomart/airflow/dags/recomart_pipeline.py","logger":"airflow.dag_processing.dagbag.BundleDagBag","filename":"dagbag.py","lineno":469}
+{"timestamp":"2026-05-01T00:02:47.356287Z","level":"info","event":"Task instance is in running state","logger":"task.stdout"}
+{"timestamp":"2026-05-01T00:02:47.356397Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","logger":"task.stdout"}
+{"timestamp":"2026-05-01T00:02:47.356452Z","level":"info","event":"Current task name:feature_engineering","logger":"task.stdout"}
+{"timestamp":"2026-05-01T00:02:47.356480Z","level":"info","event":"Dag name:recomart_full_pipeline","logger":"task.stdout"}
+{"timestamp":"2026-05-01T00:02:47.849884Z","level":"info","event":"Cleaning interactions — input shape: (2000, 5)","logger":"data_preparation","filename":"prepare_data.py","lineno":33}
+{"timestamp":"2026-05-01T00:02:47.850907Z","level":"info","event":"  After dropping null IDs: 2000 rows","logger":"data_preparation","filename":"prepare_data.py","lineno":38}
+{"timestamp":"2026-05-01T00:02:47.852240Z","level":"info","event":"  Removed 19 duplicate user-item pairs (kept latest)","logger":"data_preparation","filename":"prepare_data.py","lineno":58}
+{"timestamp":"2026-05-01T00:02:47.855818Z","level":"info","event":"Interactions cleaned: 2000 → 1981 rows","logger":"data_preparation","filename":"prepare_data.py","lineno":72}
+{"timestamp":"2026-05-01T00:02:47.862338Z","level":"info","event":"Cleaning products — input shape: (500, 8)","logger":"data_preparation","filename":"prepare_data.py","lineno":78}
+{"timestamp":"2026-05-01T00:02:47.863250Z","level":"info","event":"Products cleaned: 500 rows","logger":"data_preparation","filename":"prepare_data.py","lineno":99}
+{"timestamp":"2026-05-01T00:02:47.863839Z","level":"info","event":"  Encoded 'category' → 6 classes","logger":"data_preparation","filename":"prepare_data.py","lineno":112}
+{"timestamp":"2026-05-01T00:02:47.864162Z","level":"info","event":"  Encoded 'brand' → 5 classes","logger":"data_preparation","filename":"prepare_data.py","lineno":112}
+{"timestamp":"2026-05-01T00:02:47.865276Z","level":"info","event":"  Normalized 'price' → [0,1]","logger":"data_preparation","filename":"prepare_data.py","lineno":118}
+{"timestamp":"2026-05-01T00:02:47.865318Z","level":"info","event":"Building user features...","logger":"feature_engineering","filename":"feature_engineering.py","lineno":105}
+{"timestamp":"2026-05-01T00:02:47.879858Z","level":"info","event":"User features: 200 users, 12 features","logger":"feature_engineering","filename":"feature_engineering.py","lineno":147}
+{"timestamp":"2026-05-01T00:02:47.879898Z","level":"info","event":"Building item features...","logger":"feature_engineering","filename":"feature_engineering.py","lineno":153}
+{"timestamp":"2026-05-01T00:02:47.882893Z","level":"info","event":"Item features: 491 items, 12 features","logger":"feature_engineering","filename":"feature_engineering.py","lineno":183}
+{"timestamp":"2026-05-01T00:02:47.882929Z","level":"info","event":"Building interaction features...","logger":"feature_engineering","filename":"feature_engineering.py","lineno":189}
+{"timestamp":"2026-05-01T00:02:47.885656Z","level":"info","event":"Interaction features: 1981 rows","logger":"feature_engineering","filename":"feature_engineering.py","lineno":211}
+{"timestamp":"2026-05-01T00:02:47.885696Z","level":"info","event":"Building item co-occurrence features...","logger":"feature_engineering","filename":"feature_engineering.py","lineno":217}
+{"timestamp":"2026-05-01T00:02:47.894964Z","level":"info","event":"Co-occurrence pairs: 337","logger":"feature_engineering","filename":"feature_engineering.py","lineno":250}
+{"timestamp":"2026-05-01T00:02:47.895679Z","level":"info","event":"Database initialised: /Users/biswa/Downloads/recomart/data/recomart.db","logger":"feature_engineering","filename":"feature_engineering.py","lineno":99}
+{"timestamp":"2026-05-01T00:02:47.904434Z","level":"info","event":"All feature tables saved to database","logger":"feature_engineering","filename":"feature_engineering.py","lineno":261}
+{"timestamp":"2026-05-01T00:02:47.904558Z","level":"info","event":"Done. Returned value was: {'user_features': 200, 'item_features': 491, 'interaction_features': 1981, 'cooccurrence_pairs': 337}","logger":"airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator","filename":"python.py","lineno":229}
+{"timestamp":"2026-05-01T00:02:47.904650Z","level":"info","event":"Pushing xcom","ti":"RuntimeTaskInstance(id=UUID('019de0d8-43eb-7d24-b8de-65348aa0db23'), task_id='feature_engineering', dag_id='recomart_full_pipeline', run_id='scheduled__2026-05-01T00:00:00+00:00', try_number=1, dag_version_id=UUID('019ddf6b-8166-71cc-b766-5f03fb517e63'), map_index=-1, hostname='biswajeets-macbook-pro.local', context_carrier={'traceparent': '00-d59a28f15ff117953dc2693e429e06d9-e3578f983ee2c7c0-01'}, task=<Task(_PythonDecoratedOperator): feature_engineering>, bundle_instance=LocalDagBundle(name=dags-folder), max_tries=2, start_date=datetime.datetime(2026, 5, 1, 0, 2, 46, 995838, tzinfo=datetime.timezone.utc), end_date=None, state=<TaskInstanceState.RUNNING: 'running'>, is_mapped=False, rendered_map_index=None, sentry_integration='')","logger":"task","filename":"task_runner.py","lineno":1724}
+{"timestamp":"2026-05-01T00:02:47.913073Z","level":"info","event":"Task instance in success state","logger":"task.stdout"}
+{"timestamp":"2026-05-01T00:02:47.913137Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","logger":"task.stdout"}
+{"timestamp":"2026-05-01T00:02:47.913332Z","level":"info","event":"Task operator:<Task(_PythonDecoratedOperator): feature_engineering>","logger":"task.stdout"}

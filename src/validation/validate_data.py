@@ -241,30 +241,44 @@ def write_quality_report(summaries: list[dict], profiles: list[dict]):
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    import sys, glob
+    import sys
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-    from ingestion.ingest_interactions import ingest_interactions_csv, generate_sample_interactions
-    from ingestion.ingest_products_api  import ingest_products_api, _generate_synthetic_products
+    from ingestion.ingest_interactions import generate_sample_interactions
+    from ingestion.ingest_products_api  import _generate_synthetic_products
+    from validation.ge_validation       import run_ge_validation
 
     logger.info("Running data validation pipeline...")
 
-    df_int  = generate_sample_interactions()
-    df_prod = pd.DataFrame(_generate_synthetic_products())
+    df_int  = generate_sample_interactions(2000)
+    df_prod = pd.DataFrame(_generate_synthetic_products(500))
 
-    # Inject deliberate errors for demonstration
-    df_int.loc[0, "rating"]    = 6.5     # out of range
-    df_int.loc[1, "user_id"]   = None    # null
-    df_int.loc[2, "item_id"]   = df_int.loc[3, "item_id"]  # potential dup
-    df_prod.loc[0, "price"]    = -10.0   # negative price
+    # ── 1. Great Expectations validation ─────────────────────────────────────
+    logger.info("=== Great Expectations Validation ===")
+    ge_results = run_ge_validation(df_int, df_prod)
+    for ds in ("interactions", "products"):
+        r = ge_results[ds]
+        status = "PASS" if r["success"] else "FAIL"
+        logger.info("[GE] %-15s [%s] %d/%d (%.1f%%)", ds, status, r["passed"], r["evaluated"], r["pass_pct"])
+    if ge_results.get("html_report"):
+        logger.info("[GE] Data Docs → %s", ge_results["html_report"])
 
-    s_int  = validate_interactions(df_int)
-    s_prod = validate_products(df_prod)
+    # ── 2. Custom rule-engine validation (with deliberate errors) ─────────────
+    logger.info("=== Custom Validator (with injected errors) ===")
+    df_int_err  = df_int.copy()
+    df_prod_err = df_prod.copy()
+    df_int_err.loc[0, "rating"]  = 6.5
+    df_int_err.loc[1, "user_id"] = None
+    df_prod_err.loc[0, "price"]  = -10.0
+
+    s_int  = validate_interactions(df_int_err)
+    s_prod = validate_products(df_prod_err)
 
     p_int  = profile_dataframe(df_int,  "interactions")
     p_prod = profile_dataframe(df_prod, "products")
 
     report_path = write_quality_report([s_int, s_prod], [p_int, p_prod])
-    print(f"\nData Quality Report: {report_path}")
-    print(f"Interactions — pass rate: {s_int['pass_rate']}")
-    print(f"Products      — pass rate: {s_prod['pass_rate']}")
+    print(f"\nCustom Quality Report : {report_path}")
+    print(f"GE HTML Report        : {ge_results.get('html_report', 'N/A')}")
+    print(f"Interactions — pass rate : {s_int['pass_rate']}")
+    print(f"Products      — pass rate : {s_prod['pass_rate']}")

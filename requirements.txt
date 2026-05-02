@@ -8,3 +8,4 @@ seaborn>=0.12
 jupyter>=1.0
 dvc>=3.0
 reportlab>=4.0
+great-expectations>=0.18,<1.0
