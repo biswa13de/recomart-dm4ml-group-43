@@ -8,6 +8,13 @@ data/processed/**
 !data/processed.dvc
 data/*.db
 logs/*.log
+airflow/logs/
+airflow/airflow.db
+airflow/airflow.db-shm
+airflow/airflow.db-wal
+airflow/standalone.log
+airflow/simple_auth_manager_passwords.json.generated
+.DS_Store
 feature_store/*/
 !feature_store/feature_registry.json
 .env
