@@ -4,300 +4,70 @@
       {
         "name": "user_features",
         "entity": "user_id",
-        "description": "User engagement features",
-        "source": "interactions_csv",
-        "version": "v20260408_162710",
-        "created_at": "2026-04-08T16:27:10.740380",
+        "description": "User activity and engagement features",
+        "source": "recomart.db",
+        "version": "v20260502_135246",
+        "created_at": "2026-05-02T13:52:46.862010",
         "features": [
           {
+            "name": "user_id",
+            "dtype": "int64",
+            "description": "user_id"
+          },
+          {
             "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total number of user interactions"
+            "dtype": "int64",
+            "description": "total_interactions"
           },
           {
             "name": "unique_items",
-            "dtype": "int",
-            "description": "Number of unique items interacted with"
+            "dtype": "int64",
+            "description": "unique_items"
           },
           {
             "name": "avg_rating_given",
-            "dtype": "float",
-            "description": "Average rating given by the user"
+            "dtype": "float64",
+            "description": "avg_rating_given"
           },
           {
             "name": "std_rating_given",
-            "dtype": "float",
-            "description": "Std deviation of ratings given"
+            "dtype": "float64",
+            "description": "std_rating_given"
           },
           {
             "name": "purchase_count",
-            "dtype": "int",
-            "description": "Number of purchases"
+            "dtype": "int64",
+            "description": "purchase_count"
           },
           {
             "name": "view_count",
-            "dtype": "int",
-            "description": "Number of item views"
+            "dtype": "int64",
+            "description": "view_count"
+          },
+          {
+            "name": "wishlist_count",
+            "dtype": "int64",
+            "description": "wishlist_count"
+          },
+          {
+            "name": "cart_count",
+            "dtype": "int64",
+            "description": "cart_count"
           },
           {
             "name": "activity_score",
-            "dtype": "float",
-            "description": "Weighted engagement score"
+            "dtype": "int64",
+            "description": "activity_score"
           },
           {
             "name": "recency_days",
-            "dtype": "float",
-            "description": "Days since last interaction"
-          }
-        ]
-      },
-      {
-        "name": "user_features",
-        "entity": "user_id",
-        "description": "User engagement features",
-        "source": "interactions_csv",
-        "version": "v20260425_205523",
-        "created_at": "2026-04-25T20:55:23.746654",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total number of user interactions"
+            "dtype": "float64",
+            "description": "recency_days"
           },
           {
-            "name": "unique_items",
-            "dtype": "int",
-            "description": "Number of unique items interacted with"
-          },
-          {
-            "name": "avg_rating_given",
-            "dtype": "float",
-            "description": "Average rating given by the user"
-          },
-          {
-            "name": "std_rating_given",
-            "dtype": "float",
-            "description": "Std deviation of ratings given"
-          },
-          {
-            "name": "purchase_count",
-            "dtype": "int",
-            "description": "Number of purchases"
-          },
-          {
-            "name": "view_count",
-            "dtype": "int",
-            "description": "Number of item views"
-          },
-          {
-            "name": "activity_score",
-            "dtype": "float",
-            "description": "Weighted engagement score"
-          },
-          {
-            "name": "recency_days",
-            "dtype": "float",
-            "description": "Days since last interaction"
-          }
-        ]
-      },
-      {
-        "name": "user_features",
-        "entity": "user_id",
-        "description": "User engagement features",
-        "source": "interactions_csv",
-        "version": "v20260425_210858",
-        "created_at": "2026-04-25T21:08:58.585893",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total number of user interactions"
-          },
-          {
-            "name": "unique_items",
-            "dtype": "int",
-            "description": "Number of unique items interacted with"
-          },
-          {
-            "name": "avg_rating_given",
-            "dtype": "float",
-            "description": "Average rating given by the user"
-          },
-          {
-            "name": "std_rating_given",
-            "dtype": "float",
-            "description": "Std deviation of ratings given"
-          },
-          {
-            "name": "purchase_count",
-            "dtype": "int",
-            "description": "Number of purchases"
-          },
-          {
-            "name": "view_count",
-            "dtype": "int",
-            "description": "Number of item views"
-          },
-          {
-            "name": "activity_score",
-            "dtype": "float",
-            "description": "Weighted engagement score"
-          },
-          {
-            "name": "recency_days",
-            "dtype": "float",
-            "description": "Days since last interaction"
-          }
-        ]
-      },
-      {
-        "name": "user_features",
-        "entity": "user_id",
-        "description": "User engagement features",
-        "source": "interactions_csv",
-        "version": "v20260425_213106",
-        "created_at": "2026-04-25T21:31:06.841050",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total number of user interactions"
-          },
-          {
-            "name": "unique_items",
-            "dtype": "int",
-            "description": "Number of unique items interacted with"
-          },
-          {
-            "name": "avg_rating_given",
-            "dtype": "float",
-            "description": "Average rating given by the user"
-          },
-          {
-            "name": "std_rating_given",
-            "dtype": "float",
-            "description": "Std deviation of ratings given"
-          },
-          {
-            "name": "purchase_count",
-            "dtype": "int",
-            "description": "Number of purchases"
-          },
-          {
-            "name": "view_count",
-            "dtype": "int",
-            "description": "Number of item views"
-          },
-          {
-            "name": "activity_score",
-            "dtype": "float",
-            "description": "Weighted engagement score"
-          },
-          {
-            "name": "recency_days",
-            "dtype": "float",
-            "description": "Days since last interaction"
-          }
-        ]
-      },
-      {
-        "name": "user_features",
-        "entity": "user_id",
-        "description": "User engagement features",
-        "source": "interactions_csv",
-        "version": "v20260425_213148",
-        "created_at": "2026-04-25T21:31:48.155383",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total number of user interactions"
-          },
-          {
-            "name": "unique_items",
-            "dtype": "int",
-            "description": "Number of unique items interacted with"
-          },
-          {
-            "name": "avg_rating_given",
-            "dtype": "float",
-            "description": "Average rating given by the user"
-          },
-          {
-            "name": "std_rating_given",
-            "dtype": "float",
-            "description": "Std deviation of ratings given"
-          },
-          {
-            "name": "purchase_count",
-            "dtype": "int",
-            "description": "Number of purchases"
-          },
-          {
-            "name": "view_count",
-            "dtype": "int",
-            "description": "Number of item views"
-          },
-          {
-            "name": "activity_score",
-            "dtype": "float",
-            "description": "Weighted engagement score"
-          },
-          {
-            "name": "recency_days",
-            "dtype": "float",
-            "description": "Days since last interaction"
-          }
-        ]
-      },
-      {
-        "name": "user_features",
-        "entity": "user_id",
-        "description": "User engagement features",
-        "source": "interactions_csv",
-        "version": "v20260425_220159",
-        "created_at": "2026-04-25T22:01:59.705071",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total number of user interactions"
-          },
-          {
-            "name": "unique_items",
-            "dtype": "int",
-            "description": "Number of unique items interacted with"
-          },
-          {
-            "name": "avg_rating_given",
-            "dtype": "float",
-            "description": "Average rating given by the user"
-          },
-          {
-            "name": "std_rating_given",
-            "dtype": "float",
-            "description": "Std deviation of ratings given"
-          },
-          {
-            "name": "purchase_count",
-            "dtype": "int",
-            "description": "Number of purchases"
-          },
-          {
-            "name": "view_count",
-            "dtype": "int",
-            "description": "Number of item views"
-          },
-          {
-            "name": "activity_score",
-            "dtype": "float",
-            "description": "Weighted engagement score"
-          },
-          {
-            "name": "recency_days",
-            "dtype": "float",
-            "description": "Days since last interaction"
+            "name": "created_at",
+            "dtype": "object",
+            "description": "created_at"
           }
         ]
       }
@@ -306,200 +76,70 @@
       {
         "name": "item_features",
         "entity": "item_id",
-        "description": "Item popularity and catalogue features",
-        "source": "interactions+products",
-        "version": "v20260408_162710",
-        "created_at": "2026-04-08T16:27:10.767081",
+        "description": "Item popularity and metadata features",
+        "source": "recomart.db",
+        "version": "v20260502_135246",
+        "created_at": "2026-05-02T13:52:46.925319",
         "features": [
           {
+            "name": "item_id",
+            "dtype": "int64",
+            "description": "item_id"
+          },
+          {
             "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total interactions with the item"
+            "dtype": "int64",
+            "description": "total_interactions"
           },
           {
             "name": "unique_users",
-            "dtype": "int",
-            "description": "Number of unique users who interacted"
+            "dtype": "int64",
+            "description": "unique_users"
           },
           {
             "name": "avg_rating_received",
-            "dtype": "float",
-            "description": "Average rating received by the item"
+            "dtype": "float64",
+            "description": "avg_rating_received"
+          },
+          {
+            "name": "std_rating_received",
+            "dtype": "float64",
+            "description": "std_rating_received"
           },
           {
             "name": "popularity_score",
-            "dtype": "float",
-            "description": "Log-normalised popularity score [0,1]"
+            "dtype": "float64",
+            "description": "popularity_score"
+          },
+          {
+            "name": "category",
+            "dtype": "object",
+            "description": "category"
+          },
+          {
+            "name": "price",
+            "dtype": "float64",
+            "description": "price"
           },
           {
             "name": "price_normalized",
-            "dtype": "float",
-            "description": "Min-max normalised price"
+            "dtype": "float64",
+            "description": "price_normalized"
+          },
+          {
+            "name": "brand",
+            "dtype": "object",
+            "description": "brand"
           },
           {
             "name": "category_encoded",
-            "dtype": "int",
-            "description": "Label-encoded product category"
-          }
-        ]
-      },
-      {
-        "name": "item_features",
-        "entity": "item_id",
-        "description": "Item popularity and catalogue features",
-        "source": "interactions+products",
-        "version": "v20260425_210903",
-        "created_at": "2026-04-25T21:09:03.054265",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total interactions with the item"
+            "dtype": "int64",
+            "description": "category_encoded"
           },
           {
-            "name": "unique_users",
-            "dtype": "int",
-            "description": "Number of unique users who interacted"
-          },
-          {
-            "name": "avg_rating_received",
-            "dtype": "float",
-            "description": "Average rating received by the item"
-          },
-          {
-            "name": "popularity_score",
-            "dtype": "float",
-            "description": "Log-normalised popularity score [0,1]"
-          },
-          {
-            "name": "price_normalized",
-            "dtype": "float",
-            "description": "Min-max normalised price"
-          },
-          {
-            "name": "category_encoded",
-            "dtype": "int",
-            "description": "Label-encoded product category"
-          }
-        ]
-      },
-      {
-        "name": "item_features",
-        "entity": "item_id",
-        "description": "Item popularity and catalogue features",
-        "source": "interactions+products",
-        "version": "v20260425_213106",
-        "created_at": "2026-04-25T21:31:06.876641",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total interactions with the item"
-          },
-          {
-            "name": "unique_users",
-            "dtype": "int",
-            "description": "Number of unique users who interacted"
-          },
-          {
-            "name": "avg_rating_received",
-            "dtype": "float",
-            "description": "Average rating received by the item"
-          },
-          {
-            "name": "popularity_score",
-            "dtype": "float",
-            "description": "Log-normalised popularity score [0,1]"
-          },
-          {
-            "name": "price_normalized",
-            "dtype": "float",
-            "description": "Min-max normalised price"
-          },
-          {
-            "name": "category_encoded",
-            "dtype": "int",
-            "description": "Label-encoded product category"
-          }
-        ]
-      },
-      {
-        "name": "item_features",
-        "entity": "item_id",
-        "description": "Item popularity and catalogue features",
-        "source": "interactions+products",
-        "version": "v20260425_213148",
-        "created_at": "2026-04-25T21:31:48.174650",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total interactions with the item"
-          },
-          {
-            "name": "unique_users",
-            "dtype": "int",
-            "description": "Number of unique users who interacted"
-          },
-          {
-            "name": "avg_rating_received",
-            "dtype": "float",
-            "description": "Average rating received by the item"
-          },
-          {
-            "name": "popularity_score",
-            "dtype": "float",
-            "description": "Log-normalised popularity score [0,1]"
-          },
-          {
-            "name": "price_normalized",
-            "dtype": "float",
-            "description": "Min-max normalised price"
-          },
-          {
-            "name": "category_encoded",
-            "dtype": "int",
-            "description": "Label-encoded product category"
-          }
-        ]
-      },
-      {
-        "name": "item_features",
-        "entity": "item_id",
-        "description": "Item popularity features",
-        "source": "interactions+products",
-        "version": "v20260425_220159",
-        "created_at": "2026-04-25T22:01:59.740465",
-        "features": [
-          {
-            "name": "total_interactions",
-            "dtype": "int",
-            "description": "Total interactions with the item"
-          },
-          {
-            "name": "unique_users",
-            "dtype": "int",
-            "description": "Number of unique users who interacted"
-          },
-          {
-            "name": "avg_rating_received",
-            "dtype": "float",
-            "description": "Average rating received by the item"
-          },
-          {
-            "name": "popularity_score",
-            "dtype": "float",
-            "description": "Log-normalised popularity score [0,1]"
-          },
-          {
-            "name": "price_normalized",
-            "dtype": "float",
-            "description": "Min-max normalised price"
-          },
-          {
-            "name": "category_encoded",
-            "dtype": "int",
-            "description": "Label-encoded product category"
+            "name": "created_at",
+            "dtype": "object",
+            "description": "created_at"
           }
         ]
       }
@@ -508,853 +148,253 @@
       {
         "name": "interaction_features",
         "entity": "user_id+item_id",
-        "description": "Interaction context features",
-        "source": "interactions_csv",
-        "version": "v20260408_162710",
-        "created_at": "2026-04-08T16:27:10.775982",
+        "description": "User-item interaction features",
+        "source": "recomart.db",
+        "version": "v20260502_135246",
+        "created_at": "2026-05-02T13:52:46.929272",
         "features": [
           {
+            "name": "user_id",
+            "dtype": "int64",
+            "description": "user_id"
+          },
+          {
+            "name": "item_id",
+            "dtype": "int64",
+            "description": "item_id"
+          },
+          {
             "name": "rating",
-            "dtype": "float",
-            "description": "User rating for item"
+            "dtype": "float64",
+            "description": "rating"
           },
           {
             "name": "hour_of_day",
-            "dtype": "int",
-            "description": "Hour of interaction (0-23)"
+            "dtype": "int64",
+            "description": "hour_of_day"
           },
           {
             "name": "day_of_week",
-            "dtype": "int",
-            "description": "Day of week (0=Mon, 6=Sun)"
+            "dtype": "int64",
+            "description": "day_of_week"
           },
           {
             "name": "is_weekend",
-            "dtype": "int",
-            "description": "1 if weekend interaction"
+            "dtype": "int64",
+            "description": "is_weekend"
           },
           {
             "name": "user_item_gap",
-            "dtype": "float",
-            "description": "Rating deviation from user average"
-          }
-        ]
-      },
-      {
-        "name": "interaction_features",
-        "entity": "user_id+item_id",
-        "description": "Interaction context features",
-        "source": "interactions_csv",
-        "version": "v20260425_210903",
-        "created_at": "2026-04-25T21:09:03.056194",
-        "features": [
-          {
-            "name": "rating",
-            "dtype": "float",
-            "description": "User rating for item"
+            "dtype": "float64",
+            "description": "user_item_gap"
           },
           {
-            "name": "hour_of_day",
-            "dtype": "int",
-            "description": "Hour of interaction (0-23)"
+            "name": "event_type",
+            "dtype": "object",
+            "description": "event_type"
           },
           {
-            "name": "day_of_week",
-            "dtype": "int",
-            "description": "Day of week (0=Mon, 6=Sun)"
-          },
-          {
-            "name": "is_weekend",
-            "dtype": "int",
-            "description": "1 if weekend interaction"
-          },
-          {
-            "name": "user_item_gap",
-            "dtype": "float",
-            "description": "Rating deviation from user average"
-          }
-        ]
-      },
-      {
-        "name": "interaction_features",
-        "entity": "user_id+item_id",
-        "description": "Interaction context features",
-        "source": "interactions_csv",
-        "version": "v20260425_213106",
-        "created_at": "2026-04-25T21:31:06.878668",
-        "features": [
-          {
-            "name": "rating",
-            "dtype": "float",
-            "description": "User rating for item"
-          },
-          {
-            "name": "hour_of_day",
-            "dtype": "int",
-            "description": "Hour of interaction (0-23)"
-          },
-          {
-            "name": "day_of_week",
-            "dtype": "int",
-            "description": "Day of week (0=Mon, 6=Sun)"
-          },
-          {
-            "name": "is_weekend",
-            "dtype": "int",
-            "description": "1 if weekend interaction"
-          },
-          {
-            "name": "user_item_gap",
-            "dtype": "float",
-            "description": "Rating deviation from user average"
-          }
-        ]
-      },
-      {
-        "name": "interaction_features",
-        "entity": "user_id+item_id",
-        "description": "Interaction context features",
-        "source": "interactions_csv",
-        "version": "v20260425_213148",
-        "created_at": "2026-04-25T21:31:48.176471",
-        "features": [
-          {
-            "name": "rating",
-            "dtype": "float",
-            "description": "User rating for item"
-          },
-          {
-            "name": "hour_of_day",
-            "dtype": "int",
-            "description": "Hour of interaction (0-23)"
-          },
-          {
-            "name": "day_of_week",
-            "dtype": "int",
-            "description": "Day of week (0=Mon, 6=Sun)"
-          },
-          {
-            "name": "is_weekend",
-            "dtype": "int",
-            "description": "1 if weekend interaction"
-          },
-          {
-            "name": "user_item_gap",
-            "dtype": "float",
-            "description": "Rating deviation from user average"
-          }
-        ]
-      },
-      {
-        "name": "interaction_features",
-        "entity": "user_id+item_id",
-        "description": "Interaction context features",
-        "source": "interactions_csv",
-        "version": "v20260425_220159",
-        "created_at": "2026-04-25T22:01:59.742723",
-        "features": [
-          {
-            "name": "rating",
-            "dtype": "float",
-            "description": "User rating for item"
-          },
-          {
-            "name": "hour_of_day",
-            "dtype": "int",
-            "description": "Hour of interaction (0-23)"
-          },
-          {
-            "name": "day_of_week",
-            "dtype": "int",
-            "description": "Day of week (0=Mon, 6=Sun)"
-          },
-          {
-            "name": "is_weekend",
-            "dtype": "int",
-            "description": "1 if weekend interaction"
-          },
-          {
-            "name": "user_item_gap",
-            "dtype": "float",
-            "description": "Rating deviation from user average"
+            "name": "timestamp",
+            "dtype": "object",
+            "description": "timestamp"
           }
         ]
       }
     ]
   },
   "versions": {
-    "user_features:v20260408_162710": {
+    "user_features:v20260502_135246": {
       "name": "user_features",
       "entity": "user_id",
-      "description": "User engagement features",
-      "source": "interactions_csv",
-      "version": "v20260408_162710",
-      "created_at": "2026-04-08T16:27:10.740380",
+      "description": "User activity and engagement features",
+      "source": "recomart.db",
+      "version": "v20260502_135246",
+      "created_at": "2026-05-02T13:52:46.862010",
       "features": [
         {
+          "name": "user_id",
+          "dtype": "int64",
+          "description": "user_id"
+        },
+        {
           "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total number of user interactions"
+          "dtype": "int64",
+          "description": "total_interactions"
         },
         {
           "name": "unique_items",
-          "dtype": "int",
-          "description": "Number of unique items interacted with"
+          "dtype": "int64",
+          "description": "unique_items"
         },
         {
           "name": "avg_rating_given",
-          "dtype": "float",
-          "description": "Average rating given by the user"
+          "dtype": "float64",
+          "description": "avg_rating_given"
         },
         {
           "name": "std_rating_given",
-          "dtype": "float",
-          "description": "Std deviation of ratings given"
+          "dtype": "float64",
+          "description": "std_rating_given"
         },
         {
           "name": "purchase_count",
-          "dtype": "int",
-          "description": "Number of purchases"
+          "dtype": "int64",
+          "description": "purchase_count"
         },
         {
           "name": "view_count",
-          "dtype": "int",
-          "description": "Number of item views"
+          "dtype": "int64",
+          "description": "view_count"
+        },
+        {
+          "name": "wishlist_count",
+          "dtype": "int64",
+          "description": "wishlist_count"
+        },
+        {
+          "name": "cart_count",
+          "dtype": "int64",
+          "description": "cart_count"
         },
         {
           "name": "activity_score",
-          "dtype": "float",
-          "description": "Weighted engagement score"
+          "dtype": "int64",
+          "description": "activity_score"
         },
         {
           "name": "recency_days",
-          "dtype": "float",
-          "description": "Days since last interaction"
+          "dtype": "float64",
+          "description": "recency_days"
+        },
+        {
+          "name": "created_at",
+          "dtype": "object",
+          "description": "created_at"
         }
       ]
     },
-    "item_features:v20260408_162710": {
+    "item_features:v20260502_135246": {
       "name": "item_features",
       "entity": "item_id",
-      "description": "Item popularity and catalogue features",
-      "source": "interactions+products",
-      "version": "v20260408_162710",
-      "created_at": "2026-04-08T16:27:10.767081",
+      "description": "Item popularity and metadata features",
+      "source": "recomart.db",
+      "version": "v20260502_135246",
+      "created_at": "2026-05-02T13:52:46.925319",
       "features": [
         {
+          "name": "item_id",
+          "dtype": "int64",
+          "description": "item_id"
+        },
+        {
           "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total interactions with the item"
+          "dtype": "int64",
+          "description": "total_interactions"
         },
         {
           "name": "unique_users",
-          "dtype": "int",
-          "description": "Number of unique users who interacted"
+          "dtype": "int64",
+          "description": "unique_users"
         },
         {
           "name": "avg_rating_received",
-          "dtype": "float",
-          "description": "Average rating received by the item"
+          "dtype": "float64",
+          "description": "avg_rating_received"
+        },
+        {
+          "name": "std_rating_received",
+          "dtype": "float64",
+          "description": "std_rating_received"
         },
         {
           "name": "popularity_score",
-          "dtype": "float",
-          "description": "Log-normalised popularity score [0,1]"
+          "dtype": "float64",
+          "description": "popularity_score"
+        },
+        {
+          "name": "category",
+          "dtype": "object",
+          "description": "category"
+        },
+        {
+          "name": "price",
+          "dtype": "float64",
+          "description": "price"
         },
         {
           "name": "price_normalized",
-          "dtype": "float",
-          "description": "Min-max normalised price"
+          "dtype": "float64",
+          "description": "price_normalized"
+        },
+        {
+          "name": "brand",
+          "dtype": "object",
+          "description": "brand"
         },
         {
           "name": "category_encoded",
-          "dtype": "int",
-          "description": "Label-encoded product category"
+          "dtype": "int64",
+          "description": "category_encoded"
+        },
+        {
+          "name": "created_at",
+          "dtype": "object",
+          "description": "created_at"
         }
       ]
     },
-    "interaction_features:v20260408_162710": {
+    "interaction_features:v20260502_135246": {
       "name": "interaction_features",
       "entity": "user_id+item_id",
-      "description": "Interaction context features",
-      "source": "interactions_csv",
-      "version": "v20260408_162710",
-      "created_at": "2026-04-08T16:27:10.775982",
+      "description": "User-item interaction features",
+      "source": "recomart.db",
+      "version": "v20260502_135246",
+      "created_at": "2026-05-02T13:52:46.929272",
       "features": [
         {
+          "name": "user_id",
+          "dtype": "int64",
+          "description": "user_id"
+        },
+        {
+          "name": "item_id",
+          "dtype": "int64",
+          "description": "item_id"
+        },
+        {
           "name": "rating",
-          "dtype": "float",
-          "description": "User rating for item"
+          "dtype": "float64",
+          "description": "rating"
         },
         {
           "name": "hour_of_day",
-          "dtype": "int",
-          "description": "Hour of interaction (0-23)"
+          "dtype": "int64",
+          "description": "hour_of_day"
         },
         {
           "name": "day_of_week",
-          "dtype": "int",
-          "description": "Day of week (0=Mon, 6=Sun)"
+          "dtype": "int64",
+          "description": "day_of_week"
         },
         {
           "name": "is_weekend",
-          "dtype": "int",
-          "description": "1 if weekend interaction"
+          "dtype": "int64",
+          "description": "is_weekend"
         },
         {
           "name": "user_item_gap",
-          "dtype": "float",
-          "description": "Rating deviation from user average"
-        }
-      ]
-    },
-    "user_features:v20260425_205523": {
-      "name": "user_features",
-      "entity": "user_id",
-      "description": "User engagement features",
-      "source": "interactions_csv",
-      "version": "v20260425_205523",
-      "created_at": "2026-04-25T20:55:23.746654",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total number of user interactions"
-        },
-        {
-          "name": "unique_items",
-          "dtype": "int",
-          "description": "Number of unique items interacted with"
-        },
-        {
-          "name": "avg_rating_given",
-          "dtype": "float",
-          "description": "Average rating given by the user"
-        },
-        {
-          "name": "std_rating_given",
-          "dtype": "float",
-          "description": "Std deviation of ratings given"
-        },
-        {
-          "name": "purchase_count",
-          "dtype": "int",
-          "description": "Number of purchases"
-        },
-        {
-          "name": "view_count",
-          "dtype": "int",
-          "description": "Number of item views"
-        },
-        {
-          "name": "activity_score",
-          "dtype": "float",
-          "description": "Weighted engagement score"
-        },
-        {
-          "name": "recency_days",
-          "dtype": "float",
-          "description": "Days since last interaction"
-        }
-      ]
-    },
-    "user_features:v20260425_210858": {
-      "name": "user_features",
-      "entity": "user_id",
-      "description": "User engagement features",
-      "source": "interactions_csv",
-      "version": "v20260425_210858",
-      "created_at": "2026-04-25T21:08:58.585893",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total number of user interactions"
-        },
-        {
-          "name": "unique_items",
-          "dtype": "int",
-          "description": "Number of unique items interacted with"
-        },
-        {
-          "name": "avg_rating_given",
-          "dtype": "float",
-          "description": "Average rating given by the user"
-        },
-        {
-          "name": "std_rating_given",
-          "dtype": "float",
-          "description": "Std deviation of ratings given"
-        },
-        {
-          "name": "purchase_count",
-          "dtype": "int",
-          "description": "Number of purchases"
-        },
-        {
-          "name": "view_count",
-          "dtype": "int",
-          "description": "Number of item views"
-        },
-        {
-          "name": "activity_score",
-          "dtype": "float",
-          "description": "Weighted engagement score"
-        },
-        {
-          "name": "recency_days",
-          "dtype": "float",
-          "description": "Days since last interaction"
-        }
-      ]
-    },
-    "item_features:v20260425_210903": {
-      "name": "item_features",
-      "entity": "item_id",
-      "description": "Item popularity and catalogue features",
-      "source": "interactions+products",
-      "version": "v20260425_210903",
-      "created_at": "2026-04-25T21:09:03.054265",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total interactions with the item"
-        },
-        {
-          "name": "unique_users",
-          "dtype": "int",
-          "description": "Number of unique users who interacted"
-        },
-        {
-          "name": "avg_rating_received",
-          "dtype": "float",
-          "description": "Average rating received by the item"
-        },
-        {
-          "name": "popularity_score",
-          "dtype": "float",
-          "description": "Log-normalised popularity score [0,1]"
-        },
-        {
-          "name": "price_normalized",
-          "dtype": "float",
-          "description": "Min-max normalised price"
-        },
-        {
-          "name": "category_encoded",
-          "dtype": "int",
-          "description": "Label-encoded product category"
-        }
-      ]
-    },
-    "interaction_features:v20260425_210903": {
-      "name": "interaction_features",
-      "entity": "user_id+item_id",
-      "description": "Interaction context features",
-      "source": "interactions_csv",
-      "version": "v20260425_210903",
-      "created_at": "2026-04-25T21:09:03.056194",
-      "features": [
-        {
-          "name": "rating",
-          "dtype": "float",
-          "description": "User rating for item"
-        },
-        {
-          "name": "hour_of_day",
-          "dtype": "int",
-          "description": "Hour of interaction (0-23)"
-        },
-        {
-          "name": "day_of_week",
-          "dtype": "int",
-          "description": "Day of week (0=Mon, 6=Sun)"
-        },
-        {
-          "name": "is_weekend",
-          "dtype": "int",
-          "description": "1 if weekend interaction"
-        },
-        {
-          "name": "user_item_gap",
-          "dtype": "float",
-          "description": "Rating deviation from user average"
-        }
-      ]
-    },
-    "user_features:v20260425_213106": {
-      "name": "user_features",
-      "entity": "user_id",
-      "description": "User engagement features",
-      "source": "interactions_csv",
-      "version": "v20260425_213106",
-      "created_at": "2026-04-25T21:31:06.841050",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total number of user interactions"
-        },
-        {
-          "name": "unique_items",
-          "dtype": "int",
-          "description": "Number of unique items interacted with"
-        },
-        {
-          "name": "avg_rating_given",
-          "dtype": "float",
-          "description": "Average rating given by the user"
-        },
-        {
-          "name": "std_rating_given",
-          "dtype": "float",
-          "description": "Std deviation of ratings given"
-        },
-        {
-          "name": "purchase_count",
-          "dtype": "int",
-          "description": "Number of purchases"
-        },
-        {
-          "name": "view_count",
-          "dtype": "int",
-          "description": "Number of item views"
-        },
-        {
-          "name": "activity_score",
-          "dtype": "float",
-          "description": "Weighted engagement score"
-        },
-        {
-          "name": "recency_days",
-          "dtype": "float",
-          "description": "Days since last interaction"
-        }
-      ]
-    },
-    "item_features:v20260425_213106": {
-      "name": "item_features",
-      "entity": "item_id",
-      "description": "Item popularity and catalogue features",
-      "source": "interactions+products",
-      "version": "v20260425_213106",
-      "created_at": "2026-04-25T21:31:06.876641",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total interactions with the item"
-        },
-        {
-          "name": "unique_users",
-          "dtype": "int",
-          "description": "Number of unique users who interacted"
-        },
-        {
-          "name": "avg_rating_received",
-          "dtype": "float",
-          "description": "Average rating received by the item"
-        },
-        {
-          "name": "popularity_score",
-          "dtype": "float",
-          "description": "Log-normalised popularity score [0,1]"
-        },
-        {
-          "name": "price_normalized",
-          "dtype": "float",
-          "description": "Min-max normalised price"
-        },
-        {
-          "name": "category_encoded",
-          "dtype": "int",
-          "description": "Label-encoded product category"
-        }
-      ]
-    },
-    "interaction_features:v20260425_213106": {
-      "name": "interaction_features",
-      "entity": "user_id+item_id",
-      "description": "Interaction context features",
-      "source": "interactions_csv",
-      "version": "v20260425_213106",
-      "created_at": "2026-04-25T21:31:06.878668",
-      "features": [
-        {
-          "name": "rating",
-          "dtype": "float",
-          "description": "User rating for item"
-        },
-        {
-          "name": "hour_of_day",
-          "dtype": "int",
-          "description": "Hour of interaction (0-23)"
-        },
-        {
-          "name": "day_of_week",
-          "dtype": "int",
-          "description": "Day of week (0=Mon, 6=Sun)"
-        },
-        {
-          "name": "is_weekend",
-          "dtype": "int",
-          "description": "1 if weekend interaction"
-        },
-        {
-          "name": "user_item_gap",
-          "dtype": "float",
-          "description": "Rating deviation from user average"
-        }
-      ]
-    },
-    "user_features:v20260425_213148": {
-      "name": "user_features",
-      "entity": "user_id",
-      "description": "User engagement features",
-      "source": "interactions_csv",
-      "version": "v20260425_213148",
-      "created_at": "2026-04-25T21:31:48.155383",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total number of user interactions"
-        },
-        {
-          "name": "unique_items",
-          "dtype": "int",
-          "description": "Number of unique items interacted with"
-        },
-        {
-          "name": "avg_rating_given",
-          "dtype": "float",
-          "description": "Average rating given by the user"
-        },
-        {
-          "name": "std_rating_given",
-          "dtype": "float",
-          "description": "Std deviation of ratings given"
-        },
-        {
-          "name": "purchase_count",
-          "dtype": "int",
-          "description": "Number of purchases"
-        },
-        {
-          "name": "view_count",
-          "dtype": "int",
-          "description": "Number of item views"
-        },
-        {
-          "name": "activity_score",
-          "dtype": "float",
-          "description": "Weighted engagement score"
-        },
-        {
-          "name": "recency_days",
-          "dtype": "float",
-          "description": "Days since last interaction"
-        }
-      ]
-    },
-    "item_features:v20260425_213148": {
-      "name": "item_features",
-      "entity": "item_id",
-      "description": "Item popularity and catalogue features",
-      "source": "interactions+products",
-      "version": "v20260425_213148",
-      "created_at": "2026-04-25T21:31:48.174650",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total interactions with the item"
-        },
-        {
-          "name": "unique_users",
-          "dtype": "int",
-          "description": "Number of unique users who interacted"
-        },
-        {
-          "name": "avg_rating_received",
-          "dtype": "float",
-          "description": "Average rating received by the item"
-        },
-        {
-          "name": "popularity_score",
-          "dtype": "float",
-          "description": "Log-normalised popularity score [0,1]"
-        },
-        {
-          "name": "price_normalized",
-          "dtype": "float",
-          "description": "Min-max normalised price"
-        },
-        {
-          "name": "category_encoded",
-          "dtype": "int",
-          "description": "Label-encoded product category"
-        }
-      ]
-    },
-    "interaction_features:v20260425_213148": {
-      "name": "interaction_features",
-      "entity": "user_id+item_id",
-      "description": "Interaction context features",
-      "source": "interactions_csv",
-      "version": "v20260425_213148",
-      "created_at": "2026-04-25T21:31:48.176471",
-      "features": [
-        {
-          "name": "rating",
-          "dtype": "float",
-          "description": "User rating for item"
-        },
-        {
-          "name": "hour_of_day",
-          "dtype": "int",
-          "description": "Hour of interaction (0-23)"
-        },
-        {
-          "name": "day_of_week",
-          "dtype": "int",
-          "description": "Day of week (0=Mon, 6=Sun)"
-        },
-        {
-          "name": "is_weekend",
-          "dtype": "int",
-          "description": "1 if weekend interaction"
-        },
-        {
-          "name": "user_item_gap",
-          "dtype": "float",
-          "description": "Rating deviation from user average"
-        }
-      ]
-    },
-    "user_features:v20260425_220159": {
-      "name": "user_features",
-      "entity": "user_id",
-      "description": "User engagement features",
-      "source": "interactions_csv",
-      "version": "v20260425_220159",
-      "created_at": "2026-04-25T22:01:59.705071",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total number of user interactions"
-        },
-        {
-          "name": "unique_items",
-          "dtype": "int",
-          "description": "Number of unique items interacted with"
-        },
-        {
-          "name": "avg_rating_given",
-          "dtype": "float",
-          "description": "Average rating given by the user"
-        },
-        {
-          "name": "std_rating_given",
-          "dtype": "float",
-          "description": "Std deviation of ratings given"
-        },
-        {
-          "name": "purchase_count",
-          "dtype": "int",
-          "description": "Number of purchases"
-        },
-        {
-          "name": "view_count",
-          "dtype": "int",
-          "description": "Number of item views"
-        },
-        {
-          "name": "activity_score",
-          "dtype": "float",
-          "description": "Weighted engagement score"
-        },
-        {
-          "name": "recency_days",
-          "dtype": "float",
-          "description": "Days since last interaction"
-        }
-      ]
-    },
-    "item_features:v20260425_220159": {
-      "name": "item_features",
-      "entity": "item_id",
-      "description": "Item popularity features",
-      "source": "interactions+products",
-      "version": "v20260425_220159",
-      "created_at": "2026-04-25T22:01:59.740465",
-      "features": [
-        {
-          "name": "total_interactions",
-          "dtype": "int",
-          "description": "Total interactions with the item"
-        },
-        {
-          "name": "unique_users",
-          "dtype": "int",
-          "description": "Number of unique users who interacted"
-        },
-        {
-          "name": "avg_rating_received",
-          "dtype": "float",
-          "description": "Average rating received by the item"
-        },
-        {
-          "name": "popularity_score",
-          "dtype": "float",
-          "description": "Log-normalised popularity score [0,1]"
-        },
-        {
-          "name": "price_normalized",
-          "dtype": "float",
-          "description": "Min-max normalised price"
-        },
-        {
-          "name": "category_encoded",
-          "dtype": "int",
-          "description": "Label-encoded product category"
-        }
-      ]
-    },
-    "interaction_features:v20260425_220159": {
-      "name": "interaction_features",
-      "entity": "user_id+item_id",
-      "description": "Interaction context features",
-      "source": "interactions_csv",
-      "version": "v20260425_220159",
-      "created_at": "2026-04-25T22:01:59.742723",
-      "features": [
-        {
-          "name": "rating",
-          "dtype": "float",
-          "description": "User rating for item"
-        },
-        {
-          "name": "hour_of_day",
-          "dtype": "int",
-          "description": "Hour of interaction (0-23)"
-        },
-        {
-          "name": "day_of_week",
-          "dtype": "int",
-          "description": "Day of week (0=Mon, 6=Sun)"
+          "dtype": "float64",
+          "description": "user_item_gap"
         },
         {
-          "name": "is_weekend",
-          "dtype": "int",
-          "description": "1 if weekend interaction"
+          "name": "event_type",
+          "dtype": "object",
+          "description": "event_type"
         },
         {
-          "name": "user_item_gap",
-          "dtype": "float",
-          "description": "Rating deviation from user average"
+          "name": "timestamp",
+          "dtype": "object",
+          "description": "timestamp"
         }
       ]
     }

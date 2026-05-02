@@ -163,6 +163,42 @@ def run_ge_validation(
     return summary
 
 
+def write_text_report(summary: dict) -> str:
+    """Write a plain-text quality report from GE summary to docs/data_quality_report.txt."""
+    from datetime import datetime
+    DOCS_DIR = ROOT_DIR / "docs"
+    DOCS_DIR.mkdir(exist_ok=True)
+    out_path = DOCS_DIR / "data_quality_report.txt"
+    ts = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    lines = [
+        "=" * 70,
+        "  RECOMART DATA QUALITY REPORT (Great Expectations)",
+        f"  Generated: {ts}",
+        "=" * 70, "",
+    ]
+    for ds in ("interactions", "products"):
+        if ds not in summary:
+            continue
+        r = summary[ds]
+        status = "PASS" if r["success"] else "FAIL"
+        lines += [
+            f"── Dataset: {ds.upper()} [{status}] ──",
+            f"   Expectations: {r['passed']}/{r['evaluated']} passed ({r['pass_pct']}%)",
+            "",
+            "   Results:",
+        ]
+        for exp in r.get("results", []):
+            icon = "✅" if exp["success"] else "❌"
+            lines.append(f"     {icon}  {exp['expectation']}")
+        lines.append("")
+    if summary.get("html_report"):
+        lines += [f"HTML Data Docs → {summary['html_report']}", ""]
+    with open(out_path, "w") as f:
+        f.write("\n".join(lines))
+    logger.info("Text report → %s", out_path)
+    return str(out_path)
+
+
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
