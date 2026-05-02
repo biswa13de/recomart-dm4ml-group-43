@@ -19,3 +19,4 @@ feature_store/*/
 !feature_store/feature_registry.json
 .env
 venv/
+docs/data_quality_report.txt

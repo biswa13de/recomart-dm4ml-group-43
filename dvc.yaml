@@ -1,0 +1,49 @@
+stages:
+  ingest:
+    cmd: .venv/bin/python pipeline/stage_ingest.py
+    outs:
+      - data/raw/interactions/interactions_latest.csv
+      - data/raw/products/products_latest.csv
+
+  validate:
+    cmd: .venv/bin/python pipeline/stage_validate.py
+    deps:
+      - data/raw/interactions/interactions_latest.csv
+      - data/raw/products/products_latest.csv
+    outs:
+      - docs/data_quality_report.txt
+
+  prepare:
+    cmd: .venv/bin/python pipeline/stage_prepare.py
+    deps:
+      - data/raw/interactions/interactions_latest.csv
+      - data/raw/products/products_latest.csv
+    outs:
+      - data/processed
+
+  feature_engineering:
+    cmd: .venv/bin/python pipeline/stage_feature_engineering.py
+    deps:
+      - data/processed
+    outs:
+      - data/recomart.db:
+          cache: false
+
+  feature_store:
+    cmd: .venv/bin/python pipeline/stage_feature_store.py
+    deps:
+      - data/recomart.db
+    outs:
+      - feature_store:
+          cache: false
+
+  train:
+    cmd: .venv/bin/python pipeline/stage_train.py
+    deps:
+      - data/processed
+      - feature_store
+    outs:
+      - models/svd_model.pkl:
+          cache: false
+      - models/content_model.pkl:
+          cache: false
