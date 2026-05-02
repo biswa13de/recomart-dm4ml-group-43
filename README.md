@@ -47,7 +47,8 @@ recomart/
 │   │   ├── ingest_interactions.py     # Task 2 — CSV user interaction ingestion
 │   │   └── ingest_products_api.py     # Task 2 — REST API product ingestion
 │   ├── validation/
-│   │   └── validate_data.py           # Task 4 — Data quality rule engine
+│   │   ├── validate_data.py           # Task 4 — Custom rule-engine validator
+│   │   └── ge_validation.py           # Task 4 — Great Expectations suites + HTML Data Docs
 │   ├── preparation/
 │   │   └── prepare_data.py            # Task 5 — Cleaning, encoding, EDA
 │   ├── features/
@@ -83,13 +84,28 @@ recomart/
 │   ├── content_model.pkl              # Latest content-based model
 │   └── mlflow_runs/                   # MLflow-compatible run JSONs + artifacts
 │
+├── pipeline/                          # DVC stage entry-point scripts
+│   ├── stage_ingest.py                #   Stage 1 — ingest
+│   ├── stage_validate.py              #   Stage 2 — validate (GE + custom)
+│   ├── stage_prepare.py               #   Stage 3 — prepare
+│   ├── stage_feature_engineering.py   #   Stage 4 — feature engineering
+│   ├── stage_feature_store.py         #   Stage 5 — feature store
+│   └── stage_train.py                 #   Stage 6 — train
+│
+├── gx/                                # Great Expectations context
+│   ├── great_expectations.yml         #   GE datasource + store config
+│   ├── expectations/
+│   │   ├── interactions_suite.json    #   12 expectations for interactions
+│   │   └── products_suite.json        #   10 expectations for products
+│   └── uncommitted/data_docs/         #   HTML Data Docs (gitignored)
+│
 ├── docs/
 │   ├── RecoMart_DM4ML_Assignment_Report.pdf   # Full assignment report
-│   ├── data_quality_report.txt                # Latest validation report
 │   └── plots/                                 # EDA charts (PNG)
 │
 ├── logs/                              # Per-module log files + DAG run JSONs
-├── dvc_setup.sh                       # DVC versioning commands reference
+├── dvc.yaml                           # DVC pipeline stage definitions
+├── dvc.lock                           # DVC pipeline lock file (reproducibility)
 ├── generate_report.py                 # Generates docs/RecoMart_..._Report.pdf
 └── requirements.txt
 ```
@@ -105,8 +121,9 @@ Each module is independently runnable. All scripts auto-generate synthetic data 
 python src/ingestion/ingest_interactions.py
 python src/ingestion/ingest_products_api.py
 
-# Task 4 — Validation + quality report
-python src/validation/validate_data.py
+# Task 4 — Validation (Great Expectations + custom rules)
+python src/validation/ge_validation.py    # GE only — generates HTML Data Docs
+python src/validation/validate_data.py    # Full validation + text report
 
 # Task 5 — Data preparation + EDA
 python src/preparation/prepare_data.py
@@ -175,25 +192,38 @@ The DAG `recomart_full_pipeline` will appear automatically. Click **Trigger DAG*
 
 ## Data Versioning with DVC
 
-DVC is initialized. Raw and processed data directories are tracked.
+DVC manages the full pipeline via `dvc.yaml` (6 stages). A local remote is pre-configured.
 
 ```bash
-# After a new pipeline run, update DVC tracking:
-dvc add data/raw/interactions/ data/raw/products/ data/processed/
-git add data/raw/interactions.dvc data/raw/products.dvc data/processed.dvc
-git commit -m "data: update dataset snapshot"
-dvc push           # Push data to remote storage
+# Run the full pipeline (reruns only changed stages):
+dvc repro
+
+# Push data artifacts to the remote after a run:
+dvc push
 
 # Restore a previous data version:
-git checkout <commit-hash> -- data/processed.dvc
+git checkout <commit-hash>
 dvc pull
+
+# Visualise the pipeline DAG:
+dvc dag
 ```
 
-To configure a remote (S3 or local):
+The pipeline stages defined in `dvc.yaml`:
+
+| Stage | Script | Key Output |
+|---|---|---|
+| `ingest` | `pipeline/stage_ingest.py` | `data/raw/**/interactions_latest.csv` |
+| `validate` | `pipeline/stage_validate.py` | `docs/data_quality_report.txt` |
+| `prepare` | `pipeline/stage_prepare.py` | `data/processed/` |
+| `feature_engineering` | `pipeline/stage_feature_engineering.py` | `data/recomart.db` |
+| `feature_store` | `pipeline/stage_feature_store.py` | `feature_store/` |
+| `train` | `pipeline/stage_train.py` | `models/*.pkl` |
+
+To point DVC at a different remote (e.g. S3):
 ```bash
 dvc remote add -d s3_remote s3://your-bucket/recomart
-# or
-dvc remote add -d local_remote /tmp/recomart_dvc_remote
+dvc push
 ```
 
 ---
@@ -212,7 +242,7 @@ ingest_products    ──┘                                                    
 | Stage | Script | Output |
 |---|---|---|
 | Ingestion | `ingest_interactions.py`, `ingest_products_api.py` | `data/raw/**` |
-| Validation | `validate_data.py` | `docs/data_quality_report.txt` |
+| Validation | `validate_data.py`, `ge_validation.py` | `docs/data_quality_report.txt`, GE HTML Data Docs |
 | Preparation | `prepare_data.py` | `data/processed/**` |
 | Feature Engineering | `feature_engineering.py` | `data/recomart.db` (4 tables) |
 | Feature Store | `feature_store.py` | `feature_store/**/features.parquet` |
@@ -293,8 +323,9 @@ python generate_report.py
 | `requests` | REST API ingestion |
 | `matplotlib`, `seaborn` | EDA plots |
 | `jupyter` | EDA notebook |
+| `great-expectations` | Data validation suites + HTML Data Docs |
 | `apache-airflow` | Pipeline orchestration UI |
-| `dvc` | Data versioning |
+| `dvc` | Data versioning + pipeline reproducibility |
 | `reportlab` | PDF report generation |
 
 Install all at once:
