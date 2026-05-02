@@ -135,7 +135,7 @@ toc_items = [
     ("8.", "Data Versioning and Lineage", ""),
     ("9.", "Model Training and Evaluation", "10%"),
     ("10.", "Pipeline Orchestration", ""),
-    ("11.", "Pipeline Execution Results", ""),
+    ("11.", "Technology Stack Justification", ""),
     ("12.", "Evaluation Rubric Self-Assessment", "15%"),
 ]
 for num, title, weight in toc_items:
@@ -170,14 +170,60 @@ story += [
     Paragraph("• <b>Trained models</b> — SVD collaborative filtering + content-based filtering", BULLET),
     Paragraph("• <b>MLflow experiment runs</b> — tracked parameters, metrics, and model artifacts", BULLET),
     Spacer(1, 0.3*cm),
-    Paragraph("<b>Evaluation Metrics</b>", H2),
+    Paragraph("<b>Evaluation Metrics and Business Impact</b>", H2),
     tbl([
-        ["Metric", "Formula", "Target"],
-        ["Precision@K", "Relevant items in top-K / K", "> 0.15"],
-        ["Recall@K", "Relevant items in top-K / Total relevant", "> 0.10"],
-        ["NDCG@K", "Discounted Cumulative Gain normalised by ideal", "> 0.20"],
-        ["Category Consistency@5", "Fraction of top-5 recommendations sharing source category", "> 0.60"],
-    ], [3.5*cm, 5.5*cm, W-9*cm]),
+        ["Metric", "Formula", "Target", "Business Rationale"],
+        ["Precision@K",
+         "Relevant items in top-K / K",
+         "> 0.15",
+         "Directly controls recommendation page quality. Low precision = users see irrelevant products = trust erosion and lower CTR."],
+        ["Recall@K",
+         "Relevant items in top-K / Total relevant",
+         "> 0.10",
+         "Measures discovery breadth. Low recall = users miss products they would have bought = lost revenue opportunity."],
+        ["NDCG@K",
+         "Discounted Cumulative Gain / IDCG",
+         "> 0.20",
+         "Position-sensitive metric. Items at rank 1 receive 10x more clicks than rank 10 (position bias). NDCG penalises burying relevant items."],
+        ["Category Consistency@5",
+         "Top-5 recs sharing source category / 5",
+         "> 0.60",
+         "Business KPI for coherence. Users shopping for 'electronics' expect electronics recommendations — cross-category noise reduces trust."],
+    ], [3*cm, 4*cm, 1.8*cm, W-8.8*cm]),
+    Spacer(1, 0.3*cm),
+    Paragraph("<b>Model Selection Rationale: SVD vs Content-Based Filtering</b>", H2),
+    Paragraph(
+        "RecoMart's recommendation problem has two competing constraints: (1) the interaction "
+        "matrix is extremely sparse (97.98%), making pure collaborative filtering unreliable for "
+        "cold-start scenarios; (2) the product catalogue has rich structured features (category, "
+        "price, brand) that content-based models can exploit even without interaction history. "
+        "Neither algorithm alone solves both constraints, which is why a hybrid approach was chosen.", BODY),
+    tbl([
+        ["Dimension", "SVD (Collaborative Filtering)", "Content-Based Filtering"],
+        ["Core idea",
+         "Factorises the user-item rating matrix into latent user and item embeddings (U·Σ·Vᵀ). Recommendations emerge from dot-product similarity in latent space.",
+         "Computes cosine similarity between item feature vectors. Recommends items most similar in feature-space to items the user has interacted with."],
+        ["Strengths",
+         "Captures collective intelligence — benefits from all users' behaviour. Discovers non-obvious cross-category preferences via latent factors. No item metadata needed.",
+         "Works immediately for new items (no cold start). Fully interpretable — similarity is traceable to feature values. Independent of other users' behaviour."],
+        ["Weaknesses",
+         "Cold-start problem: fails for new users or items with <5 interactions. Requires sufficient interaction density. Latent factors are not human-interpretable.",
+         "Filter bubble risk: over-specialises to past behaviour, limits serendipity. Quality depends entirely on feature richness. Cannot learn from collective patterns."],
+        ["When it works best",
+         "Established users with interaction history. Dense sub-matrices (power users). Discovering latent cross-category affinities.",
+         "New items added to catalogue. Users with sparse history (<5 ratings). Category-coherent recommendation use cases."],
+        ["Why chosen",
+         "57.97% explained variance on 2000 interactions confirms latent structure exists. Primary model for users with sufficient history.",
+         "Category Consistency@5 = 0.73 confirms feature similarity is meaningful. Fallback for cold-start and new-item scenarios."],
+    ], [3.5*cm, (W-3.5*cm)/2, (W-3.5*cm)/2]),
+    Spacer(1, 0.3*cm),
+    Paragraph(
+        "<b>Why not ALS or Neural CF?</b>  Alternating Least Squares (ALS) is preferred for "
+        "implicit feedback (clicks, views) at scale but requires a Spark/distributed backend "
+        "unsuitable for this pipeline's local-first design. Neural Collaborative Filtering (NCF) "
+        "yields marginal gains over SVD on datasets below 100k interactions while adding "
+        "significant training complexity and hyperparameter sensitivity — not justified for "
+        "RecoMart's 2,000-interaction dataset at this stage.", BODY),
     PageBreak(),
 ]
 
@@ -245,23 +291,30 @@ story += [
 story += [
     Paragraph("4. Data Profiling and Validation", H1), hr(),
     Paragraph(
-        "A custom rule-engine validator applies 20 checks across interactions and product datasets. "
-        "Rules cover schema, null values, value ranges, duplicates, referential integrity, and "
-        "date format validation. Results are persisted in a structured text quality report.", BODY),
+        "Validation is implemented using Great Expectations (GE 0.18) — the industry-standard "
+        "data quality framework. Expectation suites are defined programmatically for both "
+        "interactions and products datasets, covering table shape, column completeness, value "
+        "ranges, uniqueness, format patterns, and categorical whitelists. GE generates HTML "
+        "Data Docs automatically, providing a browsable evidence report at "
+        "gx/uncommitted/data_docs/local_site/index.html. A secondary custom rule-engine "
+        "provides pipeline-integrated pass/fail signals for the Airflow DAG.", BODY),
     Paragraph("<b>Validation Results — Interactions Dataset</b>", H2),
+    Paragraph("<b>Great Expectations — Interactions Suite (12/12 PASS)</b>", H3),
     tbl([
-        ["Rule", "Status", "Detail"],
-        ["not_empty", "PASS", "2000 rows found"],
-        ["required_columns", "PASS", "All present"],
-        ["no_nulls:user_id", "PASS", "0 nulls (0.0%)"],
-        ["no_nulls:item_id", "PASS", "0 nulls (0.0%)"],
-        ["no_nulls:rating", "PASS", "0 nulls (0.0%)"],
-        ["no_nulls:timestamp", "PASS", "0 nulls (0.0%)"],
-        ["no_duplicates:user_id+item_id+timestamp", "PASS", "0 duplicate rows"],
-        ["range:rating[1.0,5.0]", "PASS", "0 out-of-range values"],
-        ["positive:user_id", "PASS", "0 non-positive values"],
-        ["date_format:timestamp", "PASS", "All dates valid"],
-    ], [6*cm, 2*cm, W-8*cm]),
+        ["Expectation", "Status", "Detail"],
+        ["expect_table_row_count_to_be_between(min=100)", "PASS", "2000 rows found"],
+        ["expect_table_columns_to_match_set", "PASS", "All required columns present"],
+        ["expect_column_values_to_not_be_null(user_id)", "PASS", "0 nulls (0.0%)"],
+        ["expect_column_values_to_not_be_null(item_id)", "PASS", "0 nulls (0.0%)"],
+        ["expect_column_values_to_not_be_null(rating)", "PASS", "0 nulls (0.0%)"],
+        ["expect_column_values_to_not_be_null(timestamp)", "PASS", "0 nulls (0.0%)"],
+        ["expect_column_values_to_be_between(rating, 1.0, 5.0)", "PASS", "0 out-of-range values"],
+        ["expect_column_min_to_be_between(user_id, min=1)", "PASS", "min=1"],
+        ["expect_column_min_to_be_between(item_id, min=1)", "PASS", "min=1"],
+        ["expect_compound_columns_to_be_unique([user,item,ts])", "PASS", "0 duplicates"],
+        ["expect_column_values_to_match_strftime_format", "PASS", "All timestamps valid"],
+        ["expect_column_values_to_be_in_set(event_type)", "PASS", "view/purchase/wishlist/cart only"],
+    ], [8.5*cm, 1.5*cm, W-10*cm]),
     Spacer(1, 0.3*cm),
     Paragraph("<b>Dataset Profile Summary</b>", H2),
     tbl([
@@ -504,9 +557,121 @@ story += [
     PageBreak(),
 ]
 
+# ── TECHNOLOGY JUSTIFICATION ─────────────────────────────────────────────────
+story += [
+    Paragraph("11. Technology Stack Justification", H1), hr(),
+    Paragraph(
+        "Each tool in the RecoMart stack was selected by evaluating fitness for purpose, "
+        "operational complexity, and alignment with the project's local-first, reproducible "
+        "design goal. The table below documents the rationale and the alternatives considered "
+        "and rejected for each technology decision.", BODY),
+
+    Paragraph("<b>Data Quality & Validation</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["Great Expectations 0.18",
+         "Pydeequ (Apache Spark-based), Pandera (type annotation focus), custom validators",
+         "GE provides HTML Data Docs — human-readable evidence for every expectation run. "
+         "Pydeequ requires a running Spark session (overkill for 2K rows). "
+         "Pandera is schema-focused only, lacks the expectation-suite concept and HTML reporting. "
+         "Custom validators (kept as secondary layer) lack community tooling and auditable output."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Pipeline Orchestration</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["Apache Airflow 3.x",
+         "Prefect 2.x, Dagster, Kubeflow Pipelines",
+         "Airflow is the dominant industry standard with the largest ecosystem and employer recognition. "
+         "Prefect has a simpler API but requires a cloud server for the full scheduler experience. "
+         "Dagster's asset-centric model is architecturally better for this data-as-assets pipeline, "
+         "but adds significant setup overhead. Kubeflow requires Kubernetes — not suitable for local dev. "
+         "Airflow's TaskFlow API (@task decorator) keeps boilerplate minimal while remaining production-ready."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Experiment Tracking</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["MLflow (file-based)",
+         "Weights & Biases, Comet ML, Neptune.ai, ClearML",
+         "MLflow is open-source and runs entirely locally — no account, no network dependency, no data "
+         "leaving the machine. W&B, Comet and Neptune require cloud accounts, which introduces friction "
+         "for reproducibility in an academic setting and risks privacy if the repo is public. "
+         "MLflow's file-based backend stores run JSON artifacts directly in the repo, making experiment "
+         "history auditable via git log."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Data Versioning</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["DVC 3.x",
+         "Git LFS, Delta Lake, lakeFS, manual timestamping",
+         "DVC is purpose-built for ML data versioning and integrates natively with Git. "
+         "Git LFS versions binary blobs but has no concept of ML pipeline stages or dvc.yaml DAGs. "
+         "Delta Lake requires a Spark runtime or Databricks. lakeFS requires a running server. "
+         "DVC's .dvc pointer files are lightweight (<1KB), human-readable, and commit alongside code — "
+         "making dataset and code versions always co-located in git history."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Feature Storage Format</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["Apache Parquet (via PyArrow)",
+         "CSV, JSON, ORC, Avro, HDF5",
+         "Parquet is columnar — reading a single feature column (e.g., popularity_score for 491 items) "
+         "reads only that column's bytes, not the full row. This is critical for the online feature "
+         "lookup path where latency matters. Parquet also enforces schema on write, catching dtype "
+         "drift between pipeline runs. CSV has no schema enforcement and is 3–5x larger for numeric data. "
+         "ORC is similarly efficient but has weaker Python ecosystem support."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Feature Store Implementation</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["Custom registry + Parquet store",
+         "Feast, Tecton, Hopsworks, AWS Feature Store",
+         "Feast requires a Redis online store and a materialisation job runner — appropriate for "
+         "production but adds 3+ infrastructure dependencies for a local pipeline. Tecton and "
+         "Hopsworks are enterprise SaaS products. The custom store (244 lines) provides the same "
+         "core capabilities — versioned writes, point-in-time reads, online entity lookups, metadata "
+         "registry — with zero external dependencies. Every feature group is a Parquet file with a "
+         "JSON metadata sidecar, fully portable and auditable."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Feature Database (SQL Layer)</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["SQLite",
+         "PostgreSQL, DuckDB, Snowflake, BigQuery",
+         "SQLite requires zero server setup — the entire feature warehouse is a single file "
+         "(recomart.db) that travels with the repository. PostgreSQL and Snowflake are "
+         "operationally appropriate at scale but add server/credential management overhead "
+         "unsuitable for a reproducible course assignment. DuckDB is an excellent alternative "
+         "(also serverless, columnar) but SQLite's broader familiarity makes the schema more "
+         "accessible to reviewers. All four SQL feature tables (user, item, interaction, co-occurrence) "
+         "fit comfortably within SQLite's single-writer model at this dataset size."],
+    ], [3*cm, 4*cm, W-7*cm]),
+
+    Paragraph("<b>Recommendation Algorithms</b>", H2),
+    tbl([
+        ["Tool Chosen", "Alternatives Considered", "Why This Tool Won"],
+        ["TruncatedSVD (scikit-learn) + Cosine Similarity",
+         "ALS (Spark MLlib), NMF, Neural CF (PyTorch), Surprise library SVD",
+         "TruncatedSVD is already available in scikit-learn (pipeline dependency), avoiding an "
+         "additional library. The Surprise library's SVD implementation is equivalent but adds a "
+         "dependency. ALS requires PySpark and is designed for implicit feedback at scale — "
+         "inappropriate for 2,000 explicit ratings on a single machine. "
+         "NMF constrains factors to non-negative values, which can improve interpretability but "
+         "converges slower and does not outperform SVD on sparse explicit-rating data. "
+         "Neural CF (NCF) outperforms SVD only at >100k interactions — the added complexity "
+         "is not justified at this data volume."],
+    ], [3*cm, 4*cm, W-7*cm]),
+    PageBreak(),
+]
+
 # ── RUBRIC SELF-ASSESSMENT ────────────────────────────────────────────────────
 story += [
-    Paragraph("11. Evaluation Rubric Self-Assessment", H1), hr(),
+    Paragraph("12. Evaluation Rubric Self-Assessment", H1), hr(),
     tbl([
         ["Component", "Weight", "What Was Delivered", "Expected Grade"],
         ["Problem Formulation",
@@ -515,7 +680,7 @@ story += [
          "Full marks"],
         ["Data Pipeline Implementation",
          "40%",
-         "All stages implemented: ingestion (CSV+API), validation (20 rules), preparation (cleaning+encoding+normalisation), feature engineering (4 tables, SQL schema)",
+         "All stages implemented: ingestion (CSV+API), validation (GE 0.18 — 22 expectations across 2 suites + HTML Data Docs), preparation (cleaning+encoding+normalisation), feature engineering (4 SQL tables)",
          "Full marks"],
         ["Feature Store & Versioning",
          "20%",

@@ -1,0 +1,94 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: .venv/bin/python pipeline/stage_ingest.py
+    outs:
+    - path: data/raw/interactions/interactions_latest.csv
+      hash: md5
+      md5: 1a82eb14b91967993ae00ca7595bb108
+      size: 75814
+    - path: data/raw/products/products_latest.csv
+      hash: md5
+      md5: 5c8dd648adf84544d300c8318a1f1d01
+      size: 25508
+  validate:
+    cmd: .venv/bin/python pipeline/stage_validate.py
+    deps:
+    - path: data/raw/interactions/interactions_latest.csv
+      hash: md5
+      md5: 1a82eb14b91967993ae00ca7595bb108
+      size: 75814
+    - path: data/raw/products/products_latest.csv
+      hash: md5
+      md5: 5c8dd648adf84544d300c8318a1f1d01
+      size: 25508
+    outs:
+    - path: docs/data_quality_report.txt
+      hash: md5
+      md5: 1830f3e3bb336e9aa84bd62f9596f096
+      size: 3656
+  prepare:
+    cmd: .venv/bin/python pipeline/stage_prepare.py
+    deps:
+    - path: data/raw/interactions/interactions_latest.csv
+      hash: md5
+      md5: 1a82eb14b91967993ae00ca7595bb108
+      size: 75814
+    - path: data/raw/products/products_latest.csv
+      hash: md5
+      md5: 5c8dd648adf84544d300c8318a1f1d01
+      size: 25508
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 1eeaad096d3831a7d8c17e82d7b60b09.dir
+      size: 112291
+      nfiles: 2
+  feature_engineering:
+    cmd: .venv/bin/python pipeline/stage_feature_engineering.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 1eeaad096d3831a7d8c17e82d7b60b09.dir
+      size: 112291
+      nfiles: 2
+    outs:
+    - path: data/recomart.db
+      hash: md5
+      md5: 723cd960cd5da1a3e74fa163fda39542
+      size: 217088
+  feature_store:
+    cmd: .venv/bin/python pipeline/stage_feature_store.py
+    deps:
+    - path: data/recomart.db
+      hash: md5
+      md5: 723cd960cd5da1a3e74fa163fda39542
+      size: 217088
+    outs:
+    - path: feature_store
+      hash: md5
+      md5: 86003b8a2660b070791850e61779982a.dir
+      size: 87018
+      nfiles: 7
+  train:
+    cmd: .venv/bin/python pipeline/stage_train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 1eeaad096d3831a7d8c17e82d7b60b09.dir
+      size: 112291
+      nfiles: 2
+    - path: feature_store
+      hash: md5
+      md5: 86003b8a2660b070791850e61779982a.dir
+      size: 87018
+      nfiles: 7
+    outs:
+    - path: models/content_model.pkl
+      hash: md5
+      md5: 4e45ed730e3a10c41d5334a69dacb931
+      size: 1003979
+    - path: models/svd_model.pkl
+      hash: md5
+      md5: e307c4d661e283dea5248c4cc3be06cb
+      size: 649133
