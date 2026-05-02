@@ -86,14 +86,12 @@ ingest_products    ──┘                                                    
     def validate_interactions_task(ingestion_result: dict):
         import pandas as pd
         from ingestion.ingest_interactions import generate_sample_interactions
-        from ingestion.ingest_products_api  import _generate_synthetic_products
-        from validation.validate_data       import validate_interactions
-        from validation.ge_validation       import run_ge_validation
+        from ingestion.ingest_products_api import _generate_synthetic_products
+        from validation.ge_validation      import run_ge_validation, write_text_report
 
         df_int  = generate_sample_interactions(2000)
         df_prod = pd.DataFrame(_generate_synthetic_products(500))
 
-        # Great Expectations validation
         ge = run_ge_validation(df_int, df_prod)
         logger.info(
             "GE interactions: %d/%d passed (%.1f%%)",
@@ -102,19 +100,11 @@ ingest_products    ──┘                                                    
         if ge.get("html_report"):
             logger.info("GE Data Docs → %s", ge["html_report"])
 
-        # Custom rule-engine validation
-        summ = validate_interactions(df_int)
-        logger.info("Custom validation: %s", summ["pass_rate"])
-        if summ["failed"] > 0:
-            logger.warning("%d custom rules failed — proceeding with cleaning", summ["failed"])
-
         return {
-            "pass_rate":  summ["pass_rate"],
-            "passed":     summ["passed"],
-            "failed":     summ["failed"],
-            "ge_passed":  ge["interactions"]["passed"],
-            "ge_total":   ge["interactions"]["evaluated"],
-            "ge_pct":     ge["interactions"]["pass_pct"],
+            "success":  ge["interactions"]["success"],
+            "passed":   ge["interactions"]["passed"],
+            "failed":   ge["interactions"]["failed"],
+            "pass_pct": ge["interactions"]["pass_pct"],
         }
 
     # ── Task 4: Validate products ─────────────────────────────────────────────
@@ -123,35 +113,23 @@ ingest_products    ──┘                                                    
         import pandas as pd
         from ingestion.ingest_products_api import _generate_synthetic_products
         from ingestion.ingest_interactions import generate_sample_interactions
-        from validation.validate_data      import validate_products, write_quality_report, profile_dataframe
-        from validation.ge_validation      import run_ge_validation
+        from validation.ge_validation      import run_ge_validation, write_text_report
 
-        df_prod = pd.DataFrame(_generate_synthetic_products(500))
         df_int  = generate_sample_interactions(2000)
+        df_prod = pd.DataFrame(_generate_synthetic_products(500))
 
-        # Great Expectations validation (run on both; results already logged in task 3)
         ge = run_ge_validation(df_int, df_prod)
+        write_text_report(ge)
         logger.info(
             "GE products: %d/%d passed (%.1f%%)",
             ge["products"]["passed"], ge["products"]["evaluated"], ge["products"]["pass_pct"],
         )
 
-        # Custom rule-engine validation + text report
-        s_prod = validate_products(df_prod)
-        s_int_dummy = {
-            "dataset": "interactions", "rows": 2000, "cols": 5,
-            "rules_run": 11, "passed": 11, "failed": 0, "pass_rate": "100.0%",
-            "results": [],
-        }
-        write_quality_report(
-            [s_int_dummy, s_prod],
-            [profile_dataframe(df_int, "interactions"), profile_dataframe(df_prod, "products")],
-        )
         return {
-            "pass_rate": s_prod["pass_rate"],
-            "passed":    s_prod["passed"],
-            "ge_passed": ge["products"]["passed"],
-            "ge_total":  ge["products"]["evaluated"],
+            "success":  ge["products"]["success"],
+            "passed":   ge["products"]["passed"],
+            "failed":   ge["products"]["failed"],
+            "pass_pct": ge["products"]["pass_pct"],
         }
 
     # ── Task 5: Prepare interactions ──────────────────────────────────────────

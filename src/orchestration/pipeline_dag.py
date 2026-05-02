@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 import pandas as pd
 from ingestion.ingest_interactions import ingest_interactions_csv, generate_sample_interactions
 from ingestion.ingest_products_api import ingest_products_api, _generate_synthetic_products
-from validation.validate_data import validate_interactions, validate_products, write_quality_report, profile_dataframe
+from validation.ge_validation import run_ge_validation, write_text_report
 from preparation.prepare_data import clean_interactions, clean_products, encode_products, save_processed
 from features.feature_engineering import (
     build_user_features, build_item_features,
@@ -205,24 +205,19 @@ def build_recomart_dag() -> DAGRunner:
 
     # ── Task 3: Validate interactions ─────────────────────────────────────────
     def t_validate_interactions():
-        s = validate_interactions(ctx["df_int_raw"])
-        ctx["val_summary_int"] = s
-        logger.info(f"Interaction validation: {s['pass_rate']} pass rate")
-        if s["failed"] > 0:
-            logger.warning(f"{s['failed']} validation rules failed — proceeding with cleaning")
-        return {"pass_rate": s["pass_rate"], "failed": s["failed"]}
+        ge = run_ge_validation(ctx["df_int_raw"], ctx["df_prod_raw"])
+        ctx["ge_summary"] = ge
+        r = ge["interactions"]
+        logger.info("GE interactions: %d/%d passed (%.1f%%)", r["passed"], r["evaluated"], r["pass_pct"])
+        return {"success": r["success"], "passed": r["passed"], "pass_pct": r["pass_pct"]}
 
     # ── Task 4: Validate products ──────────────────────────────────────────────
     def t_validate_products():
-        s = validate_products(ctx["df_prod_raw"])
-        ctx["val_summary_prod"] = s
-        p_int  = profile_dataframe(ctx["df_int_raw"],  "interactions")
-        p_prod = profile_dataframe(ctx["df_prod_raw"], "products")
-        write_quality_report(
-            [ctx.get("val_summary_int", s), s],
-            [p_int, p_prod]
-        )
-        return {"pass_rate": s["pass_rate"]}
+        ge = ctx.get("ge_summary") or run_ge_validation(ctx["df_int_raw"], ctx["df_prod_raw"])
+        write_text_report(ge)
+        r = ge["products"]
+        logger.info("GE products: %d/%d passed (%.1f%%)", r["passed"], r["evaluated"], r["pass_pct"])
+        return {"success": r["success"], "passed": r["passed"], "pass_pct": r["pass_pct"]}
 
     # ── Task 5: Prepare interactions ──────────────────────────────────────────
     def t_prepare_interactions():

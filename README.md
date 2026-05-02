@@ -47,7 +47,6 @@ recomart/
 │   │   ├── ingest_interactions.py     # Task 2 — CSV user interaction ingestion
 │   │   └── ingest_products_api.py     # Task 2 — REST API product ingestion
 │   ├── validation/
-│   │   ├── validate_data.py           # Task 4 — Custom rule-engine validator
 │   │   └── ge_validation.py           # Task 4 — Great Expectations suites + HTML Data Docs
 │   ├── preparation/
 │   │   └── prepare_data.py            # Task 5 — Cleaning, encoding, EDA
@@ -121,9 +120,8 @@ Each module is independently runnable. All scripts auto-generate synthetic data 
 python src/ingestion/ingest_interactions.py
 python src/ingestion/ingest_products_api.py
 
-# Task 4 — Validation (Great Expectations + custom rules)
-python src/validation/ge_validation.py    # GE only — generates HTML Data Docs
-python src/validation/validate_data.py    # Full validation + text report
+# Task 4 — Validation (Great Expectations)
+python src/validation/ge_validation.py    # runs GE suites + writes HTML Data Docs + text report
 
 # Task 5 — Data preparation + EDA
 python src/preparation/prepare_data.py
